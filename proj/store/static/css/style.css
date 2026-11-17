@@ -1,0 +1,286 @@
+/* SCN Portal - High Contrast Modern White Theme */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap');
+
+/* CSS Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  color: #0f172a;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings */
+h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: center;
+  letter-spacing: -0.5px;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.portal-subtitle {
+  text-align: center;
+  color: #64748b;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Main Layout Wrapper */
+.main-w3layouts {
+  padding: 2.5rem 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 90vh;
+}
+
+/* Form Card Container */
+.main-agileinfo {
+  width: 100%;
+  max-width: 460px;
+  margin: 1.5rem auto 2.5rem;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.main-agileinfo:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
+}
+
+.agileits-top {
+  padding: 2.25rem 2rem;
+}
+
+/* Form Inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select.scn-select {
+  width: 100%;
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: #0f172a;
+  background-color: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.1rem;
+  display: block;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+select.scn-select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  background-color: #ffffff;
+}
+
+input::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+}
+
+/* Buttons */
+input[type="submit"],
+.btn-scn-primary {
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #1e40af;
+  border: 1px solid #1e40af;
+  border-radius: 8px;
+  padding: 0.8rem 1.25rem;
+  margin-top: 0.75rem;
+  margin-bottom: 1.25rem;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(30, 64, 175, 0.25);
+}
+
+input[type="submit"]:hover,
+.btn-scn-primary:hover {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px -2px rgba(30, 64, 175, 0.35);
+}
+
+input[type="submit"]:active,
+.btn-scn-primary:active {
+  transform: translateY(0);
+}
+
+/* Secondary Button / Resend */
+.btn-scn-secondary,
+form action[action*="resend"] input[type="submit"] {
+  background-color: #f1f5f9;
+  color: #334155;
+  border: 1.5px solid #cbd5e1;
+  box-shadow: none;
+  margin-top: 0.5rem;
+}
+
+.btn-scn-secondary:hover,
+form action[action*="resend"] input[type="submit"]:hover {
+  background-color: #e2e8f0;
+  color: #0f172a;
+  border-color: #94a3b8;
+}
+
+/* Checkboxes & Labels */
+.wthree-text {
+  margin: 0.75rem 0 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.wthree-text label.anim {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #475569;
+  cursor: pointer;
+  user-select: none;
+}
+
+.wthree-text input.checkbox {
+  width: 17px;
+  height: 17px;
+  accent-color: #2563eb;
+  cursor: pointer;
+}
+
+/* Helper text & links */
+.agileits-top p {
+  font-size: 0.9rem;
+  color: #475569;
+  text-align: center;
+  margin: 0.6rem 0;
+  font-weight: 400;
+}
+
+.agileits-top p a {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.15s ease, text-decoration 0.15s ease;
+}
+
+.agileits-top p a:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+/* Alert Boxes */
+.alert-scn {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  margin-bottom: 1.25rem;
+  line-height: 1.4;
+}
+
+.alert-scn-danger {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+.alert-scn-success {
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.alert-scn-info {
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e40af;
+}
+
+/* SCN Brand Header */
+.scn-badge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.75px;
+  border-radius: 9999px;
+  background-color: #dbeafe;
+  color: #1e40af;
+  margin-bottom: 0.75rem;
+}
+
+.scn-role-selector {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.scn-role-btn {
+  flex: 1;
+  padding: 0.6rem 0.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 6px;
+  border: 1.5px solid #cbd5e1;
+  color: #475569;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.scn-role-btn.active,
+.scn-role-btn:hover {
+  border-color: #2563eb;
+  background: #eff6ff;
+  color: #1e40af;
+}
+
+/* Media Queries */
+@media (max-width: 520px) {
+  .main-w3layouts {
+    padding: 1.5rem 0.75rem;
+  }
+  .main-agileinfo {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05);
+  }
+  .agileits-top {
+    padding: 1.5rem 1.25rem;
+  }
+  h1 {
+    font-size: 1.75rem;
+  }
+}

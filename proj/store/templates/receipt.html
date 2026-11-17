@@ -1,0 +1,304 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>PharmaTrace SCN Receipt - {{ order.order_id }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+    rel="stylesheet">
+  <style>
+    body {
+      background-color: #f1f5f9;
+      font-family: 'Inter', sans-serif;
+      color: #0f172a;
+      padding: 2.5rem 1rem;
+    }
+
+    .receipt-container {
+      max-width: 780px;
+      margin: 0 auto;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.1);
+      overflow: hidden;
+    }
+
+    .receipt-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      color: #ffffff;
+      padding: 2rem 2.5rem;
+    }
+
+    .receipt-body {
+      padding: 2.5rem;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .receipt-stamp {
+      display: inline-block;
+      padding: 0.5rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.85rem;
+    }
+
+    .stamp-placed {
+      background-color: #eff6ff;
+      border: 2px solid #3b82f6;
+      color: #1d4ed8;
+    }
+
+    .stamp-dispatched {
+      background-color: #fefce8;
+      border: 2px solid #eab308;
+      color: #a16207;
+    }
+
+    .stamp-delivered {
+      background-color: #f0fdf4;
+      border: 2px solid #22c55e;
+      color: #15803d;
+    }
+
+    .info-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #64748b;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.2rem;
+    }
+
+    .info-val {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    .ledger-block {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+
+      .receipt-container {
+        border: none;
+        box-shadow: none;
+        max-width: 100%;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="receipt-container">
+    <!-- Header -->
+    <div class="receipt-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+      <div>
+        <div class="d-flex align-items-center gap-2 mb-1">
+          <i class="fas fa-prescription-bottle-medical fs-4 text-info"></i>
+          <span class="fs-4 fw-bold">PharmaTrace</span>
+          <span class="badge bg-primary text-white" style="font-size: 0.65rem;">SCN</span>
+        </div>
+        <div class="text-white-50" style="font-size: 0.85rem;">
+          Pharmaceutical Supply Chain Network &bull; Official Verifiable Record
+        </div>
+      </div>
+      <div class="text-md-end">
+        <div class="text-white-50" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Receipt
+          Number</div>
+        <div class="fs-5 fw-bold mono text-warning">
+          RCP-{{ order.order_id }}
+        </div>
+        <div style="font-size: 0.8rem; color: #cbd5e1;">Issued: {{ order.ordered_at|date:"Y-m-d H:i:s" }}</div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="receipt-body">
+      <!-- Status & Type Banner -->
+      <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom flex-wrap gap-2">
+        <div>
+          <span class="info-label">Transaction Certificate Type</span>
+          <div class="h5 fw-bold mb-0 text-dark">
+            {% if order.status == 'Delivered' %}
+            <i class="fas fa-certificate text-success me-1"></i> Proof-of-Delivery & Receipt Certificate
+            {% elif order.status == 'Dispatched' %}
+            <i class="fas fa-truck-fast text-primary me-1"></i> Active Dispatch Transit Receipt
+            {% else %}
+            <i class="fas fa-file-invoice text-info me-1"></i> Order Placement & Consensus Receipt
+            {% endif %}
+          </div>
+        </div>
+        <div>
+          {% if order.status == 'Delivered' %}
+          <span class="receipt-stamp stamp-delivered"><i class="fas fa-check-double me-1"></i> Order Received</span>
+          {% elif order.status == 'Dispatched' %}
+          <span class="receipt-stamp stamp-dispatched"><i class="fas fa-truck me-1"></i> Dispatched</span>
+          {% else %}
+          <span class="receipt-stamp stamp-placed"><i class="fas fa-spinner fa-spin me-1"></i> Order Placed</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Node Entities: Buyer vs Supplier -->
+      <div class="row g-4 mb-4">
+        <div class="col-sm-6">
+          <div class="p-3 bg-light rounded-3 h-100 border">
+            <span class="info-label"><i class="fas fa-store text-success me-1"></i> Destination (Retailer Node)</span>
+            <div class="info-val fs-6 text-dark mt-1">{{ order.retailer_name }}</div>
+            <div class="text-muted" style="font-size: 0.85rem;">Email: {{ order.retailer_email }}</div>
+            <div class="text-muted" style="font-size: 0.8rem;">Node Role: Verified SCN Retailer</div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="p-3 bg-light rounded-3 h-100 border">
+            <span class="info-label"><i class="fas fa-truck text-primary me-1"></i> Source (Distributor Node)</span>
+            <div class="info-val fs-6 text-dark mt-1">{{ order.distributor.username|default:"Apex Central
+              Pharmaceuticals" }}</div>
+            <div class="text-muted" style="font-size: 0.85rem;">Email: {{
+              order.distributor.email|default:"distributor@scn.io" }}</div>
+            <div class="text-muted" style="font-size: 0.8rem;">Guaranteed SLA Lead Time: {{
+              order.product.lead_time_hours }} hours</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Itemized Table -->
+      <div class="table-responsive mb-4">
+        <table class="table table-bordered align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>SKU</th>
+              <th>Product / Medicine Name</th>
+              <th>Category</th>
+              <th class="text-center">Qty</th>
+              <th class="text-end">Unit Price</th>
+              <th class="text-end">Total Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="mono font-semibold">{{ order.product.sku }}</td>
+              <td class="fw-bold">{{ order.product.name }}</td>
+              <td><span class="badge bg-secondary-subtle text-dark border">{{ order.product.category }}</span></td>
+              <td class="text-center fw-bold">{{ order.quantity }}</td>
+              <td class="text-end">${{ order.product.price }}</td>
+              <td class="text-end fw-bold text-success fs-6">${{ order.total_price }}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="table-light">
+              <td colspan="5" class="text-end fw-bold">Grand Total (USD):</td>
+              <td class="text-end fw-bold text-success fs-5">${{ order.total_price }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <!-- Latency & SLA Performance Metrics -->
+      <div class="card border mb-4">
+        <div class="card-header bg-light fw-bold" style="font-size: 0.85rem;">
+          <i class="fas fa-stopwatch text-warning-emphasis me-1"></i> SCN Low-Latency Performance Record
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-sm-4">
+              <div class="info-label">Order Placed Timestamp</div>
+              <div class="info-val">{{ order.ordered_at|date:"M d, Y H:i:s" }}</div>
+            </div>
+            <div class="col-sm-4">
+              <div class="info-label">Dispatched Timestamp</div>
+              <div class="info-val">
+                {% if order.dispatched_at %}
+                {{ order.dispatched_at|date:"M d, Y H:i:s" }}
+                {% else %}
+                <span class="text-muted">Awaiting Dispatch</span>
+                {% endif %}
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="info-label">Delivery Received Timestamp</div>
+              <div class="info-val">
+                {% if order.delivered_at %}
+                {{ order.delivered_at|date:"M d, Y H:i:s" }}
+                {% else %}
+                <span class="text-muted">In Pipeline</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="mt-3 pt-3 border-top d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div>
+              <span class="text-muted" style="font-size: 0.85rem;">Promised Delivery SLA:</span>
+              <strong class="text-dark ms-1">&le; {{ order.product.lead_time_hours }} hours</strong>
+            </div>
+            <div>
+              <span class="text-muted" style="font-size: 0.85rem;">Actual Recorded SCN Latency:</span>
+              {% if order.latency_recorded_hours %}
+              <span class="badge bg-success-subtle text-success border border-success px-3 py-1 fs-6 fw-bold">
+                <i class="fas fa-bolt me-1"></i> {{ order.latency_recorded_hours }} hrs (SLA Achieved)
+              </span>
+              {% else %}
+              <span class="badge bg-light text-dark border">Calculating upon completion</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Blockchain/SCN Verification Ledger Box -->
+      <div class="ledger-block">
+        <div class="fw-bold mb-2 text-dark d-flex align-items-center justify-content-between">
+          <span><i class="fas fa-shield-halved text-success me-1"></i> SCN Cryptographic Verification Hash</span>
+          <span class="badge bg-dark font-monospace">Consensus Protocol 2.4</span>
+        </div>
+        <div class="text-muted mb-2 mono" style="font-size: 0.775rem; word-break: break-all;">
+          SCN-LEDGER-HASH#{{ order.id }}a89b02fc4e71927d{{ order.order_id|lower }}9817f54c2e
+        </div>
+        <div class="row g-2 text-muted" style="font-size: 0.8rem;">
+          <div class="col-sm-6">&bull; Node Sync Latency: <strong>38ms</strong></div>
+          <div class="col-sm-6">&bull; Verified by Network Lead: <strong>Swastik Pandya</strong></div>
+        </div>
+      </div>
+
+      <!-- Action Buttons (Hidden on Print) -->
+      <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top no-print">
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary fw-semibold">
+          <i class="fas fa-arrow-left me-1"></i> Return to Dashboard
+        </a>
+        <button onclick="window.print()" class="btn btn-primary fw-bold px-4">
+          <i class="fas fa-print me-1"></i> Print / Save Receipt PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

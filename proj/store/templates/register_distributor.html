@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Distributor Registration - PharmaTrace SCN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" media="all" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="main-w3layouts wrapper">
+    <div style="text-align: center;">
+      <span class="scn-badge" style="background-color: #dbeafe; color: #1e40af;"><i class="fas fa-truck"></i> Supplier
+        Onboarding</span>
+    </div>
+    <h1>Distributor Registration</h1>
+    <p class="portal-subtitle">Connect Supply Node to Low-Latency Distribution Network</p>
+
+    <div class="main-agileinfo">
+      <div class="agileits-top">
+        {% if error %}
+        <div class="alert-scn alert-scn-danger">
+          <i class="fas fa-exclamation-circle"></i> {{ error }}
+        </div>
+        {% endif %}
+
+        <form action="{% url 'register_distributor' %}" method="post">
+          {% csrf_token %}
+          <label
+            style="font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 0.35rem; display: block;">Distributor
+            Name / Company</label>
+          <input type="text" name="Username" value="{{ request.POST.Username|default:'' }}"
+            placeholder="e.g. Apex Logistics" required>
+
+          <label
+            style="font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 0.35rem; display: block;">Business
+            Email</label>
+          <input type="email" name="email" value="{{ request.POST.email|default:'' }}"
+            placeholder="distributor@example.com" required>
+
+          <label
+            style="font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 0.35rem; display: block;">Password</label>
+          <input type="password" name="password" placeholder="Create secure password" required>
+
+          <label
+            style="font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 0.35rem; display: block;">Confirm
+            Password</label>
+          <input type="password" name="confirm_pass" placeholder="Confirm password" required>
+
+          <div class="wthree-text">
+            <label class="anim">
+              <input type="checkbox" class="checkbox" checked required>
+              <span>I agree to SCN low-latency dispatch SLAs</span>
+            </label>
+          </div>
+
+          <input type="submit" value="REGISTER DISTRIBUTOR NODE">
+        </form>
+
+        <p>Already registered? <a href="{% url 'login_distributor' %}">Distributor Login</a></p>
+        <p style="margin-top: 0.5rem;"><a href="{% url 'dashboard' %}"><i class="fas fa-arrow-left"></i> Back to
+            Dashboard</a></p>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

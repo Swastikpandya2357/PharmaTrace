@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Distributor Login - PharmaTrace SCN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" media="all" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="main-w3layouts wrapper">
+    <div style="text-align: center;">
+      <span class="scn-badge" style="background-color: #dbeafe; color: #1e40af;"><i class="fas fa-truck-fast"></i> SCN
+        Supply Node</span>
+    </div>
+    <h1>Distributor Login</h1>
+    <p class="portal-subtitle">Low-Latency Inventory & Dispatch Operations</p>
+
+    <div class="main-agileinfo">
+      <div class="agileits-top">
+        {% if error %}
+        <div class="alert-scn alert-scn-danger">
+          <i class="fas fa-exclamation-circle"></i> {{ error }}
+        </div>
+        {% endif %}
+
+        <form action="{% url 'login_distributor' %}" method="post">
+          {% csrf_token %}
+          <label
+            style="font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 0.35rem; display: block;">Username
+            or Email</label>
+          <input type="text" name="email" value="{{ request.POST.email|default:'' }}"
+            placeholder="Username or registered email" required>
+
+          <label
+            style="font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 0.35rem; display: block;">Password</label>
+          <input type="password" name="password" placeholder="Enter distributor password" required>
+
+          <input type="submit" value="LOG IN AS DISTRIBUTOR">
+        </form>
+
+        <p>Don't have an account? <a href="{% url 'register_distributor' %}">Register New Distributor Node</a></p>
+        <p><a href="{% url 'forgot_password_distributor' %}"><i class="fas fa-key"></i> Forgot Password? (Email OTP)</a>
+        </p>
+        <p style="margin-top: 1rem;">Switch Role:
+          <a href="{% url 'login_admin' %}">Admin Login</a> |
+          <a href="{% url 'login_user' %}">Retailer Login</a>
+        </p>
+        <p style="margin-top: 0.5rem;"><a href="{% url 'dashboard' %}"><i class="fas fa-arrow-left"></i> Back to Unified
+            SCN Dashboard</a></p>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

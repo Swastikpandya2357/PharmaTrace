@@ -1,0 +1,28 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment & Private Configs
+.env
+.env.local
+*.env.production
+
+# Logs
+*.log
+*.sqlite3-journal
+
+# IDEs & Editor configurations
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Windows system files
+Thumbs.db
+Desktop.ini
+
+# Virtual environments
+venv/
+.venv/
+env/

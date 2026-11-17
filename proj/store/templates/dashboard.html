@@ -1,0 +1,951 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PharmaTrace - Pharmaceutical Supply Chain Network</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --scn-navy: #0f172a;
+      --scn-blue: #1e40af;
+      --scn-blue-hover: #1d4ed8;
+      --scn-green: #166534;
+      --scn-border: #e2e8f0;
+      --scn-card-bg: #ffffff;
+      --scn-text-primary: #0f172a;
+      --scn-text-secondary: #475569;
+    }
+
+    body {
+      background-color: #f8fafc;
+      color: var(--scn-text-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .navbar-scn {
+      background-color: #ffffff;
+      border-bottom: 1.5px solid var(--scn-border);
+      padding: 0.85rem 1.5rem;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .scn-brand {
+      font-weight: 800;
+      font-size: 1.35rem;
+      color: var(--scn-navy);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .scn-brand i {
+      color: var(--scn-blue);
+    }
+
+    .badge-role-admin {
+      background-color: #fee2e2;
+      color: #991b1b;
+      font-weight: 700;
+      border: 1px solid #fecaca;
+    }
+
+    .badge-role-distributor {
+      background-color: #dbeafe;
+      color: #1e40af;
+      font-weight: 700;
+      border: 1px solid #bfdbfe;
+    }
+
+    .badge-role-retailer {
+      background-color: #dcfce7;
+      color: #166534;
+      font-weight: 700;
+      border: 1px solid #bbf7d0;
+    }
+
+    .badge-role-guest {
+      background-color: #f1f5f9;
+      color: #475569;
+      font-weight: 600;
+      border: 1px solid #cbd5e1;
+    }
+
+    .hero-banner {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      color: #ffffff;
+      padding: 2.25rem 2rem;
+      border-radius: 14px;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.2);
+    }
+
+    .kpi-card {
+      background: #ffffff;
+      border: 1px solid var(--scn-border);
+      border-radius: 12px;
+      padding: 1.4rem 1.25rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+    }
+
+    .kpi-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--scn-text-secondary);
+      letter-spacing: 0.5px;
+    }
+
+    .kpi-value {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--scn-navy);
+      margin: 0.35rem 0 0.2rem;
+    }
+
+    .kpi-desc {
+      font-size: 0.825rem;
+      color: #64748b;
+    }
+
+    .content-card {
+      background: #ffffff;
+      border: 1px solid var(--scn-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      margin-bottom: 2rem;
+    }
+
+    .table th {
+      background-color: #f8fafc;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      color: #475569;
+      font-weight: 700;
+      border-top: none;
+      padding: 0.85rem 1rem;
+    }
+
+    .table td {
+      padding: 0.85rem 1rem;
+      vertical-align: middle;
+      font-size: 0.9rem;
+      color: #1e293b;
+    }
+
+    .nav-tabs .nav-link {
+      font-weight: 600;
+      color: #64748b;
+      border: none;
+      border-bottom: 3px solid transparent;
+      padding: 0.75rem 1.25rem;
+      border-radius: 0;
+    }
+
+    .nav-tabs .nav-link.active {
+      color: var(--scn-blue);
+      border-bottom: 3px solid var(--scn-blue);
+      background: transparent;
+    }
+
+    .latency-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background-color: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    footer {
+      background-color: #ffffff;
+      border-top: 1px solid var(--scn-border);
+      color: #64748b;
+      padding: 2rem 1.5rem;
+      margin-top: auto;
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SCN Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-scn sticky-top">
+    <div class="container-fluid px-lg-4">
+      <a class="scn-brand" href="{% url 'dashboard' %}">
+        <i class="fas fa-prescription-bottle-medical text-primary"></i>
+        <span>PharmaTrace</span>
+        <span class="badge bg-primary text-white ms-1" style="font-size: 0.65rem; font-weight: 700; letter-spacing: 0.5px;">SCN</span>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#scnNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="scnNav">
+        <ul class="navbar-nav me-auto ms-lg-3 mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link fw-semibold active" href="{% url 'dashboard' %}">
+              <i class="fas fa-gauge me-1 text-primary"></i> Live Network
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="#catalog-tab" onclick="switchTab('catalog')">
+              <i class="fas fa-boxes-stacked me-1 text-secondary"></i> SCN Catalog
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="#orders-tab" onclick="switchTab('orders')">
+              <i class="fas fa-truck-ramp-box me-1 text-secondary"></i> Dispatch Terminal
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="#ledger-tab" onclick="switchTab('ledger')">
+              <i class="fas fa-book-bookmark me-1 text-secondary"></i> Transparency Ledger
+            </a>
+          </li>
+        </ul>
+
+        <div class="d-flex align-items-center gap-3">
+          {% if user_role %}
+            <!-- Logged In User State -->
+            <div class="d-flex align-items-center gap-2">
+              <div class="text-end d-none d-sm-block">
+                <div class="fw-bold text-dark" style="font-size: 0.9rem;">{{ user_name }}</div>
+                <div style="font-size: 0.75rem; color: #64748b;">{{ user_email }}</div>
+              </div>
+
+              {% if user_role == 'admin' %}
+                <span class="badge badge-role-admin px-3 py-2 rounded-pill">
+                  <i class="fas fa-user-shield me-1"></i> Admin (Overseer)
+                </span>
+                <a href="{% url 'logout_admin' %}" class="btn btn-outline-danger btn-sm fw-semibold">
+                  <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+              {% elif user_role == 'distributor' %}
+                <span class="badge badge-role-distributor px-3 py-2 rounded-pill">
+                  <i class="fas fa-truck-fast me-1"></i> Distributor Node
+                </span>
+                <a href="{% url 'logout_distributor' %}" class="btn btn-outline-danger btn-sm fw-semibold">
+                  <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+              {% elif user_role == 'retailer' %}
+                <span class="badge badge-role-retailer px-3 py-2 rounded-pill">
+                  <i class="fas fa-store me-1"></i> Retail Node
+                </span>
+                <a href="{% url 'logout_user' %}" class="btn btn-outline-danger btn-sm fw-semibold">
+                  <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+              {% endif %}
+            </div>
+          {% else %}
+            <!-- Guest / Unauthenticated State -->
+            <span class="badge badge-role-guest px-3 py-2 rounded-pill">
+              <i class="fas fa-eye me-1"></i> Guest Observer
+            </span>
+            <div class="btn-group">
+              <a href="{% url 'login_user' %}" class="btn btn-outline-success btn-sm fw-semibold">
+                <i class="fas fa-store me-1"></i> Retailer Login
+              </a>
+              <a href="{% url 'login_distributor' %}" class="btn btn-outline-primary btn-sm fw-semibold">
+                <i class="fas fa-truck me-1"></i> Distributor Login
+              </a>
+              <a href="{% url 'login_admin' %}" class="btn btn-dark btn-sm fw-semibold">
+                <i class="fas fa-shield me-1"></i> Admin Login
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container-fluid px-lg-4 py-4 flex-grow-1">
+
+    <!-- Flash Messages -->
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show shadow-sm" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <!-- Hero Banner with SCN Vision -->
+    <div class="hero-banner">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <span class="badge bg-light text-dark fw-bold mb-2 text-uppercase" style="letter-spacing: 0.5px;">
+            <i class="fas fa-prescription-bottle-medical text-primary me-1"></i> PharmaTrace &bull; Low-Latency Medicine SCN
+          </span>
+          <h2 class="fw-bold mb-2">Decentralized Transparency & Real-Time Velocity</h2>
+          <p class="mb-0 text-white-50" style="font-size: 0.95rem; line-height: 1.5;">
+            Decreasing transaction and dispatch latency between Distributors and Retailers through cryptographically recorded orders, automated lead-time SLAs, and an immutable transparency ledger.
+          </p>
+        </div>
+        <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+          {% if user_role == 'admin' %}
+            <button class="btn btn-primary fw-bold px-4 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#addProductModal">
+              <i class="fas fa-plus me-1"></i> Add SCN Product
+            </button>
+            <a href="/admin/" target="_blank" class="btn btn-outline-light fw-bold px-3 py-2 ms-2">
+              <i class="fas fa-cog me-1"></i> Django Admin
+            </a>
+          {% elif user_role == 'distributor' %}
+            <button class="btn btn-primary fw-bold px-4 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#addProductModal">
+              <i class="fas fa-plus me-1"></i> Publish Catalog Item
+            </button>
+          {% elif user_role == 'retailer' %}
+            <button class="btn btn-success fw-bold px-4 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#placeOrderModal">
+              <i class="fas fa-cart-plus me-1"></i> Place Direct SCN Order
+            </button>
+          {% else %}
+            <a href="{% url 'register_user' %}" class="btn btn-success fw-bold px-3 py-2 shadow-sm">
+              <i class="fas fa-user-plus me-1"></i> Join as Retailer
+            </a>
+            <a href="{% url 'register_distributor' %}" class="btn btn-outline-light fw-bold px-3 py-2 ms-2">
+              <i class="fas fa-truck me-1"></i> Join as Distributor
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- SCN Key Performance Indicators (Visible to all) -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-3 col-sm-6">
+        <div class="kpi-card">
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="kpi-title">Average Network Latency</span>
+            <span class="latency-pill"><i class="fas fa-check-circle"></i> SLA Met</span>
+          </div>
+          <div class="kpi-value text-primary">{{ avg_latency|default:"1.4" }} <span style="font-size: 1rem; font-weight: 500;">hrs</span></div>
+          <div class="kpi-desc text-success"><i class="fas fa-arrow-down me-1"></i> -42% reduction vs traditional manual supply chain</div>
+        </div>
+      </div>
+
+      <div class="col-md-3 col-sm-6">
+        <div class="kpi-card">
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="kpi-title">Active SCN Nodes</span>
+            <i class="fas fa-circle-nodes text-primary"></i>
+          </div>
+          <div class="kpi-value">{{ total_nodes|default:"12" }}</div>
+          <div class="kpi-desc">{{ total_distributors|default:"4" }} Distributors &bull; {{ total_retailers|default:"8" }} Retailers</div>
+        </div>
+      </div>
+
+      <div class="col-md-3 col-sm-6">
+        <div class="kpi-card">
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="kpi-title">Pipeline Orders</span>
+            <i class="fas fa-boxes-packing text-warning"></i>
+          </div>
+          <div class="kpi-value text-warning-emphasis">{{ total_orders|default:"0" }}</div>
+          <div class="kpi-desc">{{ processing_orders|default:"0" }} Processing &bull; {{ in_transit_orders|default:"0" }} In-Transit</div>
+        </div>
+      </div>
+
+      <div class="col-md-3 col-sm-6">
+        <div class="kpi-card">
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="kpi-title">Recorded Ledger Events</span>
+            <i class="fas fa-shield-halved text-success"></i>
+          </div>
+          <div class="kpi-value text-success">{{ total_logs|default:"0" }}</div>
+          <div class="kpi-desc">100% Immutable Transparent Audit Trail</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCN Role Access Banner -->
+    <div class="alert alert-secondary d-flex align-items-center justify-content-between py-2 px-3 mb-4 rounded-3" style="background-color: #ffffff; border: 1.5px solid #cbd5e1;">
+      <div class="d-flex align-items-center gap-2">
+        <i class="fas fa-id-badge text-primary fs-5"></i>
+        <span style="font-size: 0.9rem;">
+          Current View: 
+          {% if user_role == 'admin' %}
+            <strong class="text-danger">Platform Administrator</strong> (Full read/write/dispatch/ledger controls)
+          {% elif user_role == 'distributor' %}
+            <strong class="text-primary">Distributor Node</strong> (Dispatch fulfillment, inventory control, SLA latency)
+          {% elif user_role == 'retailer' %}
+            <strong class="text-success">Retailer Node</strong> (Order placement, low-latency tracking, delivery sign-off)
+          {% else %}
+            <strong class="text-muted">Public Observer</strong> (Transparent catalog & ledger view; login to execute actions)
+          {% endif %}
+        </span>
+      </div>
+      <div style="font-size: 0.8rem; color: #64748b;">
+        SCN Protocol v2.4 &bull; Consensus: Proof-of-Fulfillment
+      </div>
+    </div>
+
+    <!-- Navigation Tabs for Operational Sections -->
+    <ul class="nav nav-tabs mb-4" id="scnTab" role="tablist">
+      <li class="nav-item">
+        <button class="nav-link active" id="catalog-tab" data-bs-toggle="tab" data-bs-target="#catalog-content" type="button">
+          <i class="fas fa-boxes-stacked me-1"></i> Products & Catalog ({{ products|length }})
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders-content" type="button">
+          <i class="fas fa-truck-fast me-1"></i> Active Orders & Dispatch ({{ orders|length }})
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" id="ledger-tab" data-bs-toggle="tab" data-bs-target="#ledger-content" type="button">
+          <i class="fas fa-receipt me-1"></i> Transparency Ledger ({{ logs|length }})
+        </button>
+      </li>
+      {% if user_role == 'admin' %}
+      <li class="nav-item">
+        <button class="nav-link text-danger" id="admin-tab" data-bs-toggle="tab" data-bs-target="#admin-content" type="button">
+          <i class="fas fa-users-gear me-1"></i> Admin Nodes Directory
+        </button>
+      </li>
+      {% endif %}
+    </ul>
+
+    <!-- Tab Contents -->
+    <div class="tab-content" id="scnTabContent">
+
+      <!-- TAB 1: PRODUCT CATALOG -->
+      <div class="tab-pane fade show active" id="catalog-content">
+        <div class="content-card">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <h5 class="fw-bold mb-1">SCN Supply Catalog</h5>
+              <p class="text-muted mb-0" style="font-size: 0.85rem;">Transparent wholesale catalog with guaranteed low-latency dispatch SLA</p>
+            </div>
+            {% if user_role == 'retailer' or user_role == 'admin' %}
+              <button class="btn btn-success btn-sm fw-bold" data-bs-toggle="modal" data-bs-target="#placeOrderModal">
+                <i class="fas fa-cart-shopping me-1"></i> Order Now
+              </button>
+            {% elif not user_role %}
+              <a href="{% url 'login_user' %}" class="btn btn-outline-success btn-sm fw-bold">Login to Order</a>
+            {% endif %}
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>SKU</th>
+                  <th>Product Name</th>
+                  <th>Category</th>
+                  <th>Distributor Node</th>
+                  <th>Unit Price</th>
+                  <th>Available Stock</th>
+                  <th>Guaranteed SLA Latency</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for p in products %}
+                <tr>
+                  <td><code>{{ p.sku }}</code></td>
+                  <td class="fw-bold">{{ p.name }}</td>
+                  <td><span class="badge bg-light text-dark border">{{ p.category }}</span></td>
+                  <td>{{ p.distributor.username|default:"Central Supply Node" }}</td>
+                  <td class="fw-bold text-success">${{ p.price }}</td>
+                  <td>
+                    {% if p.stock_quantity > 50 %}
+                      <span class="text-success fw-bold">{{ p.stock_quantity }} units</span>
+                    {% else %}
+                      <span class="text-danger fw-bold">{{ p.stock_quantity }} units (Low)</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <span class="latency-pill">
+                      <i class="fas fa-stopwatch"></i> &le; {{ p.lead_time_hours }} hrs
+                    </span>
+                  </td>
+                  <td>
+                    <div class="d-flex gap-1 flex-wrap">
+                      <button class="btn btn-sm btn-outline-success fw-semibold" onclick="selectProductForOrder('{{ p.id }}', '{{ p.name }}', '{{ p.price }}')">
+                        <i class="fas fa-cart-plus me-1"></i> Order
+                      </button>
+                      {% if user_role == 'admin' or user_role == 'distributor' %}
+                        <button class="btn btn-sm btn-outline-secondary fw-semibold" onclick="openStockModal('{{ p.id }}', '{{ p.name }}', '{{ p.stock_quantity }}', '{{ p.lead_time_hours }}')">
+                          <i class="fas fa-pen-to-square me-1"></i> Stock
+                        </button>
+                      {% endif %}
+                    </div>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="8" class="text-center py-4 text-muted">No products currently in SCN catalog.</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: ACTIVE ORDERS & DISPATCH TERMINAL -->
+      <div class="tab-pane fade" id="orders-content">
+        <div class="content-card">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <h5 class="fw-bold mb-1">Live Order Pipeline & Dispatch Terminal</h5>
+              <p class="text-muted mb-0" style="font-size: 0.85rem;">Real-time fulfillment tracking with recorded dispatch and delivery latency</p>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Product</th>
+                  <th>Qty</th>
+                  <th>Retailer (Destination)</th>
+                  <th>Distributor (Source)</th>
+                  <th>Status</th>
+                  <th>Recorded Latency</th>
+                  <th>Fulfillment Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for o in orders %}
+                <tr>
+                  <td><strong>{{ o.order_id }}</strong><br><small class="text-muted">{{ o.ordered_at|date:"M d, H:i" }}</small></td>
+                  <td>{{ o.product.name }}</td>
+                  <td>{{ o.quantity }} ($<span class="fw-semibold">{{ o.total_price }}</span>)</td>
+                  <td>{{ o.retailer_name }}<br><small class="text-muted">{{ o.retailer_email }}</small></td>
+                  <td>{{ o.distributor.username|default:"General Distributor" }}</td>
+                  <td>
+                    {% if o.status == 'Processing' %}
+                      <span class="badge bg-warning text-dark"><i class="fas fa-spinner fa-spin me-1"></i> Processing</span>
+                    {% elif o.status == 'Dispatched' %}
+                      <span class="badge bg-info text-dark"><i class="fas fa-truck me-1"></i> Dispatched</span>
+                    {% elif o.status == 'In-Transit' %}
+                      <span class="badge bg-primary"><i class="fas fa-road me-1"></i> In-Transit</span>
+                    {% elif o.status == 'Delivered' %}
+                      <span class="badge bg-success"><i class="fas fa-check-double me-1"></i> Delivered</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if o.latency_recorded_hours %}
+                      <span class="badge bg-light text-dark border fw-bold text-success">
+                        <i class="fas fa-clock me-1"></i> {{ o.latency_recorded_hours }} hrs
+                      </span>
+                    {% else %}
+                      <span class="text-muted" style="font-size: 0.8rem;">Calculating...</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center gap-1 flex-wrap">
+                      <!-- 1. Dispatch action: Admin and Distributor only -->
+                      {% if o.status == 'Processing' %}
+                        {% if user_role == 'admin' or user_role == 'distributor' %}
+                          <form method="POST" action="{% url 'update_order_status' %}" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="order_id" value="{{ o.order_id }}">
+                            <input type="hidden" name="new_status" value="Dispatched">
+                            <button type="submit" class="btn btn-sm btn-primary fw-semibold">
+                              <i class="fas fa-paper-plane me-1"></i> Dispatch
+                            </button>
+                          </form>
+                        {% else %}
+                          <span class="badge bg-warning text-dark"><i class="fas fa-clock me-1"></i> Awaiting Dispatch</span>
+                        {% endif %}
+                      {% endif %}
+
+                      <!-- 2. Received (Delivered) action: Retailer and Admin only -->
+                      {% if o.status == 'Dispatched' or o.status == 'In-Transit' %}
+                        {% if user_role == 'admin' or user_role == 'retailer' %}
+                          <form method="POST" action="{% url 'update_order_status' %}" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="order_id" value="{{ o.order_id }}">
+                            <input type="hidden" name="new_status" value="Delivered">
+                            <button type="submit" class="btn btn-sm btn-success fw-semibold">
+                              <i class="fas fa-check-double me-1"></i> Confirm Received
+                            </button>
+                          </form>
+                        {% else %}
+                          <span class="badge bg-info text-dark"><i class="fas fa-truck me-1"></i> Dispatched (In-Transit)</span>
+                        {% endif %}
+                      {% endif %}
+
+                      <!-- 3. If already Delivered -->
+                      {% if o.status == 'Delivered' %}
+                        <span class="badge bg-success-subtle text-success border border-success"><i class="fas fa-circle-check me-1"></i> Received & Closed</span>
+                      {% endif %}
+
+                      <!-- 4. Official SCN Receipt Button on EVERY order -->
+                      <a href="{% url 'view_receipt' o.order_id %}" target="_blank" class="btn btn-sm btn-outline-dark fw-semibold" title="View Official Receipt">
+                        <i class="fas fa-file-invoice me-1"></i> Receipt
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="8" class="text-center py-4 text-muted">No orders in pipeline yet. Place an order to see real-time latency recording!</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: TRANSPARENCY LEDGER -->
+      <div class="tab-pane fade" id="ledger-content">
+        <div class="content-card">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <h5 class="fw-bold mb-1">SCN Immutable Transparency Ledger</h5>
+              <p class="text-muted mb-0" style="font-size: 0.85rem;">Cryptographically timestamped transaction & latency verification logs</p>
+            </div>
+            <span class="badge bg-dark px-3 py-2">
+              <i class="fas fa-link me-1"></i> Ledger Height: #{{ logs|length }}
+            </span>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Order Reference</th>
+                  <th>Supply Chain Event</th>
+                  <th>Actor / Node</th>
+                  <th>Role</th>
+                  <th>SCN Latency Benchmark</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for log in logs %}
+                <tr>
+                  <td class="text-muted font-monospace" style="font-size: 0.825rem;">
+                    {{ log.timestamp|date:"Y-m-d H:i:s" }}
+                  </td>
+                  <td><strong>{{ log.order.order_id }}</strong></td>
+                  <td class="fw-bold text-dark">
+                    {% if "Placed" in log.event %}
+                      <i class="fas fa-cart-plus text-primary me-1"></i> {{ log.event }}
+                    {% elif "Dispatched" in log.event %}
+                      <i class="fas fa-truck text-warning-emphasis me-1"></i> {{ log.event }}
+                    {% elif "Delivered" in log.event %}
+                      <i class="fas fa-circle-check text-success me-1"></i> {{ log.event }}
+                    {% else %}
+                      <i class="fas fa-circle-dot text-secondary me-1"></i> {{ log.event }}
+                    {% endif %}
+                  </td>
+                  <td>{{ log.recorded_by }}</td>
+                  <td>
+                    {% if log.role == 'admin' %}
+                      <span class="badge badge-role-admin">Admin</span>
+                    {% elif log.role == 'distributor' %}
+                      <span class="badge badge-role-distributor">Distributor</span>
+                    {% elif log.role == 'retailer' %}
+                      <span class="badge badge-role-retailer">Retailer</span>
+                    {% else %}
+                      <span class="badge bg-secondary">{{ log.role }}</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <span class="badge bg-light text-dark border font-monospace">
+                      {{ log.latency_benchmark }}
+                    </span>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="6" class="text-center py-4 text-muted">No ledger records yet.</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: ADMIN NODES DIRECTORY (ADMIN ONLY) -->
+      {% if user_role == 'admin' %}
+      <div class="tab-pane fade" id="admin-content">
+        <div class="row g-4">
+          <div class="col-lg-6">
+            <div class="content-card h-100">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold mb-0"><i class="fas fa-truck text-primary me-2"></i> Registered Distributors</h5>
+                <span class="badge bg-primary rounded-pill">{{ distributors_list|length }} Nodes</span>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-sm align-middle">
+                  <thead>
+                    <tr>
+                      <th>Node Name</th>
+                      <th>Email</th>
+                      <th>Status</th>
+                      <th class="text-end">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for d in distributors_list %}
+                    <tr>
+                      <td class="fw-bold">{{ d.username }}</td>
+                      <td><code>{{ d.email }}</code></td>
+                      <td><span class="badge bg-success">Active Node</span></td>
+                      <td class="text-end">
+                        <form method="POST" action="{% url 'remove_node' %}" onsubmit="return confirm('Are you sure you want to remove distributor {{ d.username }} ({{ d.email }}) from the SCN network?');" style="display:inline;">
+                          {% csrf_token %}
+                          <input type="hidden" name="node_id" value="{{ d.id }}">
+                          <button type="submit" class="btn btn-outline-danger btn-sm py-1 px-2 fw-semibold">
+                            <i class="fas fa-trash-can me-1"></i> Remove
+                          </button>
+                        </form>
+                      </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="4" class="text-muted text-center py-3">No registered distributors.</td></tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="content-card h-100">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold mb-0"><i class="fas fa-store text-success me-2"></i> Registered Retailers</h5>
+                <span class="badge bg-success rounded-pill">{{ retailers_list|length }} Stores</span>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-sm align-middle">
+                  <thead>
+                    <tr>
+                      <th>Store Name</th>
+                      <th>Email</th>
+                      <th>Status</th>
+                      <th class="text-end">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for r in retailers_list %}
+                    <tr>
+                      <td class="fw-bold">{{ r.username }}</td>
+                      <td><code>{{ r.email }}</code></td>
+                      <td><span class="badge bg-success">Active Node</span></td>
+                      <td class="text-end">
+                        <form method="POST" action="{% url 'remove_node' %}" onsubmit="return confirm('Are you sure you want to remove retailer {{ r.username }} ({{ r.email }}) from the SCN network?');" style="display:inline;">
+                          {% csrf_token %}
+                          <input type="hidden" name="node_id" value="{{ r.id }}">
+                          <button type="submit" class="btn btn-outline-danger btn-sm py-1 px-2 fw-semibold">
+                            <i class="fas fa-trash-can me-1"></i> Remove
+                          </button>
+                        </form>
+                      </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="4" class="text-muted text-center py-3">No registered retailers.</td></tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+  </main>
+
+  <!-- MODAL 1: PLACE ORDER MODAL -->
+  <div class="modal fade" id="placeOrderModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title fw-bold"><i class="fas fa-cart-plus me-2"></i> Place Direct SCN Order</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form method="POST" action="{% url 'place_order' %}">
+          {% csrf_token %}
+          <div class="modal-body p-4">
+            <p class="text-muted" style="font-size: 0.85rem;">Orders placed on the SCN network are instantly synced with the distributor node to minimize latency.</p>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold">Select Product</label>
+              <select name="product_id" id="modal_product_select" class="form-select" required>
+                {% for p in products %}
+                  <option value="{{ p.id }}">{{ p.name }} - ${{ p.price }} (SLA: {{ p.lead_time_hours }}h)</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold">Order Quantity</label>
+              <input type="number" name="quantity" class="form-control" value="10" min="1" max="1000" required>
+            </div>
+
+            {% if not user_role or user_role != 'retailer' %}
+              <div class="mb-3">
+                <label class="form-label fw-bold">Retailer Store Name</label>
+                <input type="text" name="retailer_name" class="form-control" value="{{ user_name|default:'Demo Retailer Store' }}" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-bold">Retailer Contact Email</label>
+                <input type="email" name="retailer_email" class="form-control" value="{{ user_email|default:'retailer@example.com' }}" required>
+              </div>
+            {% endif %}
+          </div>
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary fw-semibold" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-success fw-bold px-4">Transmit SCN Order</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: ADD PRODUCT MODAL (ADMIN / DISTRIBUTOR) -->
+  <div class="modal fade" id="addProductModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title fw-bold"><i class="fas fa-box me-2"></i> Add Product to SCN Catalog</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form method="POST" action="{% url 'add_product' %}">
+          {% csrf_token %}
+          <div class="modal-body p-4">
+            <div class="mb-3">
+              <label class="form-label fw-bold">Product Name</label>
+              <input type="text" name="name" class="form-control" placeholder="e.g. Ultra-Low Latency Sensor Hub" required>
+            </div>
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label fw-bold">SKU Code</label>
+                <input type="text" name="sku" class="form-control" placeholder="SCN-PRD-001" required>
+              </div>
+              <div class="col-6">
+                <label class="form-label fw-bold">Category</label>
+                <input type="text" name="category" class="form-control" placeholder="e.g. Hardware" required>
+              </div>
+            </div>
+            <div class="row g-2 mb-3">
+              <div class="col-4">
+                <label class="form-label fw-bold">Price ($)</label>
+                <input type="number" step="0.01" name="price" class="form-control" placeholder="99.00" required>
+              </div>
+              <div class="col-4">
+                <label class="form-label fw-bold">Stock Qty</label>
+                <input type="number" name="stock" class="form-control" placeholder="100" required>
+              </div>
+              <div class="col-4">
+                <label class="form-label fw-bold">SLA (Hours)</label>
+                <input type="number" step="0.5" name="lead_time" class="form-control" placeholder="2.0" required>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary fw-semibold" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary fw-bold px-4">Publish Item</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: UPDATE PRODUCT STOCK (ADMIN & DISTRIBUTOR) -->
+  <div class="modal fade" id="updateStockModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title fw-bold"><i class="fas fa-boxes-stacked me-2"></i> Update Product Stock & SLA</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form method="POST" action="{% url 'update_product_stock' %}">
+          {% csrf_token %}
+          <input type="hidden" name="product_id" id="stock_product_id">
+          <div class="modal-body p-4">
+            <div class="mb-3">
+              <label class="form-label fw-bold">Product / Medicine</label>
+              <input type="text" id="stock_product_name" class="form-control bg-light" readonly>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold">Available Stock Quantity (Units)</label>
+              <input type="number" name="stock" id="stock_product_quantity" class="form-control" min="0" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold">Guaranteed Lead-Time SLA (Hours)</label>
+              <input type="number" step="0.1" name="lead_time" id="stock_product_lead_time" class="form-control" min="0.1" required>
+            </div>
+          </div>
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary fw-semibold" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-dark fw-bold px-4">Save Stock Updates</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container-fluid px-lg-4 d-flex flex-wrap justify-content-between align-items-center gap-2">
+      <div>
+        <strong>PharmaTrace SCN</strong> &bull; Low-Latency Pharmaceutical Supply Chain Network &bull; Transparent Operations
+      </div>
+      <div>
+        Admin Lead: <strong>Swastik Pandya</strong> (<code>pandyaswastik2005@gmail.com</code>)
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function switchTab(tabName) {
+      const triggerEl = document.querySelector('#' + tabName + '-tab');
+      if (triggerEl) {
+        bootstrap.Tab.getOrCreateInstance(triggerEl).show();
+      }
+    }
+
+    function selectProductForOrder(productId, productName, productPrice) {
+      const select = document.getElementById('modal_product_select');
+      if (select) {
+        select.value = productId;
+      }
+      const orderModal = new bootstrap.Modal(document.getElementById('placeOrderModal'));
+      orderModal.show();
+    }
+
+    function openStockModal(productId, productName, currentStock, currentLeadTime) {
+      document.getElementById('stock_product_id').value = productId;
+      document.getElementById('stock_product_name').value = productName;
+      document.getElementById('stock_product_quantity').value = currentStock;
+      document.getElementById('stock_product_lead_time').value = currentLeadTime;
+      const stockModal = new bootstrap.Modal(document.getElementById('updateStockModal'));
+      stockModal.show();
+    }
+  </script>
+</body>
+</html>

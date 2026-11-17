@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Verify Admin OTP - Supply Chain Network (SCN)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" media="all" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="main-w3layouts wrapper">
+    <div style="text-align: center;">
+      <span class="scn-badge"><i class="fas fa-shield-alt"></i> SCN Verification</span>
+    </div>
+    <h1>Admin OTP Verification</h1>
+    <p class="portal-subtitle">Enter the 6-digit code dispatched to <strong>{{ email }}</strong></p>
+
+    <div class="main-agileinfo">
+      <div class="agileits-top">
+        {% if info_message %}
+        <div class="alert-scn alert-scn-info">
+          <i class="fas fa-envelope"></i> {{ info_message }}
+        </div>
+        {% endif %}
+
+        {% if message %}
+        <div class="alert-scn alert-scn-success">
+          <i class="fas fa-check-circle"></i> {{ message }}
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="alert-scn alert-scn-danger">
+          <i class="fas fa-exclamation-triangle"></i> {{ error }}
+        </div>
+        {% endif %}
+
+        <form action="{% url 'verify_otp_admin' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="email" value="{{ email }}">
+          <label
+            style="font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 0.35rem; display: block;">6-Digit
+            OTP Code</label>
+          <input type="text" name="otp" placeholder="e.g. 580456" maxlength="6"
+            style="letter-spacing: 4px; font-size: 1.25rem; text-align: center; font-weight: 700;" required autofocus>
+
+          <input type="submit" value="VERIFY OTP & CONTINUE">
+        </form>
+
+        <form method="POST" action="{% url 'resend_otp_admin' %}" style="margin-top: 0.5rem;">
+          {% csrf_token %}
+          <input type="hidden" name="email" value="{{ email }}">
+          <input type="submit" class="btn-scn-secondary" value="Resend OTP to Email" style="margin-bottom: 0.5rem;">
+        </form>
+
+        <p><a href="{% url 'login_admin' %}"><i class="fas fa-arrow-left"></i> Cancel and Return to Login</a></p>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
